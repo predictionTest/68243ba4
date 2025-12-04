@@ -103,6 +103,7 @@ jobs:
     - name: Notify AWS Lambda Webhook
       env:
         WEBHOOK_URL: ${{ secrets.AWS_WEBHOOK_URL }}
+        WEBHOOK_SECRET: ${{ secrets.WEBHOOK_GITHUB_SECRET }}
         ROOT_CID: ${{ steps.create-car.outputs.root_cid }}
       run: |
         echo "🔔 Sending deployment notification to webhook..."
@@ -112,18 +113,34 @@ jobs:
           exit 0
         fi
         
+        if [ -z "$WEBHOOK_SECRET" ]; then
+          echo "⚠️  WEBHOOK_GITHUB_SECRET secret not set, skipping webhook notification"
+          exit 0
+        fi
+        
         echo "📍 CID: $ROOT_CID"
         echo "📍 Commit: ${{ github.sha }}"
         echo "📍 Repository: ${{ github.repository }}"
         
-        # Send webhook notification (no ENS name needed at this stage)
+        # Create webhook payload using jq (ensures proper JSON formatting)
+        PAYLOAD=$(jq -n \
+          --arg repo "${{ github.repository }}" \
+          --arg cid "$ROOT_CID" \
+          --arg commit "${{ github.sha }}" \
+          '{githubRepo: $repo, cid: $cid, commitSha: $commit}')
+        
+        echo "📦 Payload: $PAYLOAD"
+        
+        # Generate GitHub webhook signature (HMAC-SHA256)
+        SIGNATURE=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | sed 's/^.* //')
+        
+        echo "🔐 Signature generated: sha256=$SIGNATURE"
+        
+        # Send webhook notification with signature
         RESPONSE=$(curl -s -X POST "$WEBHOOK_URL" \
           -H "Content-Type: application/json" \
-          --data "{
-            \"githubRepo\": \"${{ github.repository }}\",
-            \"cid\": \"$ROOT_CID\",
-            \"commitSha\": \"${{ github.sha }}\"
-          }")
+          -H "X-Hub-Signature-256: sha256=$SIGNATURE" \
+          --data "$PAYLOAD")
         
         echo ""
         echo "📬 Webhook Response:"
