@@ -1,5 +1,6 @@
 /* === src/index.css === */
 /* === src/index.css === */
+/* === src/index.css === */
 * {
     margin: 0;
     padding: 0;
@@ -13,9 +14,26 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #0a0c14;
+    color: #e5e7eb;
+    color-scheme: dark;
+}
+
+::selection {
+    background-color: rgba(124, 58, 237, 0.35);
+    color: #ffffff;
 }
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;
+    color: #e9d5ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
 }

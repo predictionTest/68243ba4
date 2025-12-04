@@ -1,25 +1,28 @@
 /* === src/App.css === */
 /* === src/App.css === */
+/* === src/App.css === */
 .App {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+    background: radial-gradient(900px circle at 20% 0%, rgba(124, 58, 237, 0.15), transparent 45%), linear-gradient(135deg, #0b0f19 0%, #0a0c14 100%);
+    color-scheme: dark;
 }
 
 .container {
     text-align: center;
-    background: white;
+    background: #111827;
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(124, 58, 237, 0.15);
     max-width: 500px;
     width: 90%;
+    color: #e5e7eb;
 }
 
 h1 {
-    color: #333;
+    color: #f3f4f6;
     font-size: 3rem;
     margin-bottom: 30px;
     font-weight: 700;
@@ -35,14 +38,26 @@ h1 {
 .greeting-input {
     padding: 15px;
     font-size: 16px;
-    border: 2px solid #3b82f6;
+    background: #0f172a;
+    color: #e5e7eb;
+    border: 2px solid #374151;
     border-radius: 10px;
     outline: none;
-    transition: border-color 0.3s;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.greeting-input::placeholder {
+    color: #9ca3af;
 }
 
 .greeting-input:focus {
-    border-color: #1d4ed8;
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.25);
+}
+
+.greeting-input:focus-visible {
+    outline: 3px solid rgba(196, 181, 253, 0.9);
+    outline-offset: 2px;
 }
 
 .submit-button {
@@ -50,33 +65,36 @@ h1 {
     font-size: 16px;
     font-weight: 600;
     color: white;
-    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .submit-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+    filter: brightness(1.05);
 }
 
 .submit-button:active {
     transform: translateY(0);
+    filter: brightness(0.98);
 }
 
 .submit-button:focus-visible {
-    outline: 3px solid rgba(255, 255, 255, 0.9);
+    outline: 3px solid rgba(196, 181, 253, 0.95);
     outline-offset: 2px;
 }
 
 .custom-greeting {
     margin-top: 30px;
     padding: 20px;
-    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
     border-radius: 10px;
     animation: fadeIn 0.5s;
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.35);
 }
 
 .custom-greeting h2 {
@@ -95,5 +113,13 @@ h1 {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
     }
 }
