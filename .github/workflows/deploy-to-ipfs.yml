@@ -124,7 +124,7 @@ jobs:
         
         # Create webhook payload using jq (ensures proper JSON formatting)
         PAYLOAD=$(jq -n \
-          --arg repo "${{ github.repository }}" \
+          --arg repo "https://github.com/${{ github.repository }}" \
           --arg cid "$ROOT_CID" \
           --arg commit "${{ github.sha }}" \
           '{githubRepo: $repo, cid: $cid, commitSha: $commit}')
